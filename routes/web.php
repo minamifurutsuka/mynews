@@ -30,6 +30,7 @@ Route::controller(ProfileController::class)->prefix('admin')->name('admin.')->mi
     Route::get('profile/create', 'add');
     Route::get('profile/edit', 'edit');
     Route::post('profile/create','create')->name('profile.create');
+    Route::post('profile/edit', 'edit')->name('profile.update');
 });
 
 Auth::routes();
