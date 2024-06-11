@@ -9,9 +9,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h2>MY プロフィール</h2>
-                                <form action="{{ route('admin.profile.create') }}" method="post" enctype="multipart/form-data">
-
+                <h2>プロフィール編集</h2>
+                <form action="{{ route('admin.profile.update') }}" method="post" enctype="multipart/form-data">
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)

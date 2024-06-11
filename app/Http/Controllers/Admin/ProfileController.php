@@ -48,7 +48,7 @@ class ProfileController extends Controller
         return view('admin.profile.index', ['posts' => $posts, 'cond_title' => $cond_title]);
     }
      // 以下を追記
-    public function edit(Request $request)
+    public function profileedit(Request $request)
     {
         // Profile Modelからデータを取得する
         $profile = Profile::find($request->id);
@@ -58,7 +58,7 @@ class ProfileController extends Controller
         return view('admin.profile.edit', ['profile_form' => $profile]);
     }
 
-    public function update(Request $request)
+    public function profileupdate(Request $request)
     {
         // Validationをかける
         $this->validate($request, News::$rules);

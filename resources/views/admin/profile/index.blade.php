@@ -32,8 +32,10 @@
                         <thead>
                             <tr>
                                 <th width="10%">ID</th>
-                                <th width="20%">タイトル</th>
-                                <th width="50%">本文</th>
+                                <th width="10%">名前</th>
+                                <th width="10%">性別</th>
+                                <th width="20%">趣味</th>
+                                <th width="20%">自己紹介</th>
                                 <th width="10%">操作</th>
                             </tr>
                         </thead>
@@ -41,8 +43,10 @@
                             @foreach($posts as $profile)
                                 <tr>
                                     <th>{{ $profile->id }}</th>
-                                    <td>{{ Str::limit($profile->title, 100) }}</td>
-                                    <td>{{ Str::limit($profile->body, 250) }}</td>
+                                    <td>{{ Str::limit($profile->name, 10) }}</td>
+                                    <td>{{ Str::limit($profile->gender, 5) }}</td>
+                                    <td>{{ Str::limit($profile->hobby, 50) }}</td>
+                                    <td>{{ Str::limit($profile->introduction, 100) }}</td>
                                     <td>
                                         <div>
                                             <a href="{{ route('admin.profile.edit', ['id' => $profile->id]) }}">編集</a>
