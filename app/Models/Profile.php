@@ -19,6 +19,6 @@ class Profile extends Model
      // historiesと関連付けを行う
     public function histories()
     {
-        return $this->hasMany('App\Models\History');
+        return $this->hasMany('App\Models\ProfileHistory');
     }
 }

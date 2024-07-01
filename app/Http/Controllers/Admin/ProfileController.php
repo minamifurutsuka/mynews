@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Profile;
 
 //History Modelの使用を宣言
-use App\Models\History;
+use App\Models\ProfileHistory;
 //Carbonを使って取得した現在時刻を、History Modelの edited_at として記録
 use Carbon\Carbon;
 
@@ -30,45 +30,6 @@ class ProfileController extends Controller
         return redirect('admin/profile/create');
     }
 
-    public function edit()
-    {
-        return view('admin.profile.edit');
-    }
-
-    public function update(Request $request)
-    {
-        // Validationをかける
-        $this->validate($request, Profile::$rules);
-        // Profile Modelからデータを取得する
-        $profile = Profile::find($request->id);
-        // 送信されてきたフォームデータを格納する
-        $profile_form = $request->all();
-
-        if ($request->remove == 'true') {
-            $profile_form['image_path'] = null;
-        } elseif ($request->file('image')) {
-            $path = $request->file('image')->store('public/image');
-            $profile_form['image_path'] = basename($path);
-        } else {
-            $profile_form['image_path'] = $profile->image_path;
-        }
-
-        unset($profile_form['image']);
-        unset($profile_form['remove']);
-        unset($profile_form['_token']);
-
-        // 該当するデータを上書きして保存する
-        $profile->fill($profile_form)->save();
-
-        // 以下を追記
-        $history = new History();
-        $history->profile_id = $profile->id;
-        $history->edited_at = Carbon::now();
-        $history->save();
-
-        return redirect('admi/profile');
-    }
-
      // 一覧を作成する
     public function index(Request $request)
     {
@@ -83,7 +44,7 @@ class ProfileController extends Controller
         return view('admin.profile.index', ['posts' => $posts, 'cond_title' => $cond_title]);
     }
      // 以下を追記
-    public function profileedit(Request $request)
+    public function edit(Request $request)
     {
         // Profile Modelからデータを取得する
         $profile = Profile::find($request->id);
@@ -93,7 +54,7 @@ class ProfileController extends Controller
         return view('admin.profile.edit', ['profile_form' => $profile]);
     }
 
-    public function profileupdate(Request $request)
+    public function update(Request $request)
     {
         // Validationをかける
         $this->validate($request, profile::$rules);
@@ -101,15 +62,13 @@ class ProfileController extends Controller
         $profile = Profile::find($request->id);
         // 送信されてきたフォームデータを格納する
         $profile_form = $request->all();
-        unset($profile_form['image']);
-        unset($profile_form['remove']);
         unset($profile_form['_token']);
 
         // 該当するデータを上書きして保存する
         $profile->fill($profile_form)->save();
         
          // Profile Modelを保存するタイミングで、同時に History Modelにも編集履歴を追加する.
-        $history = new History();
+        $history = new ProfileHistory();
         $history->profile_id = $profile->id;
         $history->edited_at = Carbon::now();
         $history->save();
